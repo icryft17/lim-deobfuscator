@@ -1,0 +1,7 @@
+.vs
+x64
+log.txt
+lim-deobfuscator
+Debug
+Release
+*.exe

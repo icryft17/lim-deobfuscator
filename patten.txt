@@ -1,0 +1,62 @@
+---------------
+pushad
+popad
+, 
+deadcode
+---------------
+push ecx
+pop eax
+,
+mov eax, ecx
+---------------
+push eax
+pop eax
+,
+deadcode
+---------------
+deadcode
+stc
+stc
+,
+stc
+---------------
+deadcode
+cld
+cld
+,
+cld
+---------------
+opaque predicate
+0046B008   | 7D 01 | jge unpackme_acprotect1.32.c1.46B00B |
+0046B00A   | 72 4F | jb unpackme_acprotect1.32.c1.46B05B  |
+,
+0046B008   | 7D 01 | jge unpackme_acprotect1.32.c1.46B00B |
+0046B00A   | 90 4F | dec edi  |
+--------------------
+instruction memicrations
+0046B00F   | E8 01000000 | call unpackme_acprotect1.32.c1.46B015 |
+0046B014   | EB 83       | jmp unpackme_acprotect1.32.c1.46AF99  |
+,
+0046B00F | 90  | nop |
+0046B010 | 90  | nop |
+0046B011 | 90  | nop |
+0046B012 | 90  | nop |
+0046B013 | 90  | nop |
+0046B014 | 90  | nop |
+--------------------
+call 0x410000 -> ret
+,
+deadcode
+--------------------
+deadcode
+clc
+stc
+,
+stc
+--------------------
+call dword ptr ds:[0x0046BEAD] -> 0046BEAD  A0 93 42 00 
+
+------------------
+mov x, y
+xor x, k
+--------------------------------------

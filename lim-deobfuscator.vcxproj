@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{36a75876-1a82-4b43-9218-f03495bddb53}</ProjectGuid>
+    <RootNamespace>limdeobfuscator</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>D:\reverse\projects\lim-deobfuscator\src;D:\reverse\projects\lim-deobfuscator\lib;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\reverse\projects\lim-deobfuscator\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>D:\reverse\projects\lim-deobfuscator\src;D:\reverse\projects\lim-deobfuscator\lib;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\reverse\projects\lim-deobfuscator\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>D:\reverse\projects\lim-deobfuscator\src;D:\reverse\projects\lim-deobfuscator\lib;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\reverse\projects\lim-deobfuscator\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>D:\reverse\projects\lim-deobfuscator\src;D:\reverse\projects\lim-deobfuscator\lib;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\reverse\projects\lim-deobfuscator\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ForcedIncludeFiles>$(ProjectDir)src\settings.h;$(ProjectDir)src\context.h</ForcedIncludeFiles>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>D:\reverse\projects\lim-deobfuscator\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>spdlog_x32.lib;Zydis_x32.lib;Zycore_x32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ForcedIncludeFiles>$(ProjectDir)src\settings.h;$(ProjectDir)src\context.h</ForcedIncludeFiles>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>D:\reverse\projects\lim-deobfuscator\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>spdlog_x32.lib;Zydis_x32.lib;Zycore_x32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ForcedIncludeFiles>$(ProjectDir)src\settings.h;$(ProjectDir)src\context.h</ForcedIncludeFiles>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>D:\reverse\projects\lim-deobfuscator\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>spdlog_x64.lib;Zydis_x64.lib;Zycore_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ForcedIncludeFiles>$(ProjectDir)src\settings.h;$(ProjectDir)src\context.h</ForcedIncludeFiles>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>D:\reverse\projects\lim-deobfuscator\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>spdlog_x64.lib;Zydis_x64.lib;Zycore_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="lib\mimalloc\mimalloc-new-delete.h" />
+    <ClInclude Include="lib\mimalloc\mimalloc-override.h" />
+    <ClInclude Include="lib\mimalloc\mimalloc-stats.h" />
+    <ClInclude Include="lib\mimalloc\mimalloc.h" />
+    <ClInclude Include="lib\mimalloc\mimalloc\atomic.h" />
+    <ClInclude Include="lib\mimalloc\mimalloc\internal.h" />
+    <ClInclude Include="lib\mimalloc\mimalloc\prim.h" />
+    <ClInclude Include="lib\mimalloc\mimalloc\track.h" />
+    <ClInclude Include="lib\mimalloc\mimalloc\types.h" />
+    <ClInclude Include="lib\spdlog\async.h" />
+    <ClInclude Include="lib\spdlog\async_logger-inl.h" />
+    <ClInclude Include="lib\spdlog\async_logger.h" />
+    <ClInclude Include="lib\spdlog\cfg\argv.h" />
+    <ClInclude Include="lib\spdlog\cfg\env.h" />
+    <ClInclude Include="lib\spdlog\cfg\helpers-inl.h" />
+    <ClInclude Include="lib\spdlog\cfg\helpers.h" />
+    <ClInclude Include="lib\spdlog\common-inl.h" />
+    <ClInclude Include="lib\spdlog\common.h" />
+    <ClInclude Include="lib\spdlog\details\backtracer-inl.h" />
+    <ClInclude Include="lib\spdlog\details\backtracer.h" />
+    <ClInclude Include="lib\spdlog\details\circular_q.h" />
+    <ClInclude Include="lib\spdlog\details\console_globals.h" />
+    <ClInclude Include="lib\spdlog\details\file_helper-inl.h" />
+    <ClInclude Include="lib\spdlog\details\file_helper.h" />
+    <ClInclude Include="lib\spdlog\details\fmt_helper.h" />
+    <ClInclude Include="lib\spdlog\details\log_msg-inl.h" />
+    <ClInclude Include="lib\spdlog\details\log_msg.h" />
+    <ClInclude Include="lib\spdlog\details\log_msg_buffer-inl.h" />
+    <ClInclude Include="lib\spdlog\details\log_msg_buffer.h" />
+    <ClInclude Include="lib\spdlog\details\mpmc_blocking_q.h" />
+    <ClInclude Include="lib\spdlog\details\null_mutex.h" />
+    <ClInclude Include="lib\spdlog\details\os-inl.h" />
+    <ClInclude Include="lib\spdlog\details\os.h" />
+    <ClInclude Include="lib\spdlog\details\periodic_worker-inl.h" />
+    <ClInclude Include="lib\spdlog\details\periodic_worker.h" />
+    <ClInclude Include="lib\spdlog\details\registry-inl.h" />
+    <ClInclude Include="lib\spdlog\details\registry.h" />
+    <ClInclude Include="lib\spdlog\details\synchronous_factory.h" />
+    <ClInclude Include="lib\spdlog\details\tcp_client-windows.h" />
+    <ClInclude Include="lib\spdlog\details\tcp_client.h" />
+    <ClInclude Include="lib\spdlog\details\thread_pool-inl.h" />
+    <ClInclude Include="lib\spdlog\details\thread_pool.h" />
+    <ClInclude Include="lib\spdlog\details\udp_client-windows.h" />
+    <ClInclude Include="lib\spdlog\details\udp_client.h" />
+    <ClInclude Include="lib\spdlog\details\windows_include.h" />
+    <ClInclude Include="lib\spdlog\fmt\bin_to_hex.h" />
+    <ClInclude Include="lib\spdlog\fmt\bundled\args.h" />
+    <ClInclude Include="lib\spdlog\fmt\bundled\base.h" />
+    <ClInclude Include="lib\spdlog\fmt\bundled\chrono.h" />
+    <ClInclude Include="lib\spdlog\fmt\bundled\color.h" />
+    <ClInclude Include="lib\spdlog\fmt\bundled\compile.h" />
+    <ClInclude Include="lib\spdlog\fmt\bundled\core.h" />
+    <ClInclude Include="lib\spdlog\fmt\bundled\format-inl.h" />
+    <ClInclude Include="lib\spdlog\fmt\bundled\format.h" />
+    <ClInclude Include="lib\spdlog\fmt\bundled\os.h" />
+    <ClInclude Include="lib\spdlog\fmt\bundled\ostream.h" />
+    <ClInclude Include="lib\spdlog\fmt\bundled\printf.h" />
+    <ClInclude Include="lib\spdlog\fmt\bundled\ranges.h" />
+    <ClInclude Include="lib\spdlog\fmt\bundled\std.h" />
+    <ClInclude Include="lib\spdlog\fmt\bundled\xchar.h" />
+    <ClInclude Include="lib\spdlog\fmt\chrono.h" />
+    <ClInclude Include="lib\spdlog\fmt\compile.h" />
+    <ClInclude Include="lib\spdlog\fmt\fmt.h" />
+    <ClInclude Include="lib\spdlog\fmt\ostr.h" />
+    <ClInclude Include="lib\spdlog\fmt\ranges.h" />
+    <ClInclude Include="lib\spdlog\fmt\std.h" />
+    <ClInclude Include="lib\spdlog\fmt\xchar.h" />
+    <ClInclude Include="lib\spdlog\formatter.h" />
+    <ClInclude Include="lib\spdlog\fwd.h" />
+    <ClInclude Include="lib\spdlog\logger-inl.h" />
+    <ClInclude Include="lib\spdlog\logger.h" />
+    <ClInclude Include="lib\spdlog\mdc.h" />
+    <ClInclude Include="lib\spdlog\pattern_formatter-inl.h" />
+    <ClInclude Include="lib\spdlog\pattern_formatter.h" />
+    <ClInclude Include="lib\spdlog\sinks\android_sink.h" />
+    <ClInclude Include="lib\spdlog\sinks\ansicolor_sink-inl.h" />
+    <ClInclude Include="lib\spdlog\sinks\ansicolor_sink.h" />
+    <ClInclude Include="lib\spdlog\sinks\base_sink-inl.h" />
+    <ClInclude Include="lib\spdlog\sinks\base_sink.h" />
+    <ClInclude Include="lib\spdlog\sinks\basic_file_sink-inl.h" />
+    <ClInclude Include="lib\spdlog\sinks\basic_file_sink.h" />
+    <ClInclude Include="lib\spdlog\sinks\callback_sink.h" />
+    <ClInclude Include="lib\spdlog\sinks\daily_file_sink.h" />
+    <ClInclude Include="lib\spdlog\sinks\dist_sink.h" />
+    <ClInclude Include="lib\spdlog\sinks\dup_filter_sink.h" />
+    <ClInclude Include="lib\spdlog\sinks\hourly_file_sink.h" />
+    <ClInclude Include="lib\spdlog\sinks\kafka_sink.h" />
+    <ClInclude Include="lib\spdlog\sinks\mongo_sink.h" />
+    <ClInclude Include="lib\spdlog\sinks\msvc_sink.h" />
+    <ClInclude Include="lib\spdlog\sinks\null_sink.h" />
+    <ClInclude Include="lib\spdlog\sinks\ostream_sink.h" />
+    <ClInclude Include="lib\spdlog\sinks\qt_sinks.h" />
+    <ClInclude Include="lib\spdlog\sinks\ringbuffer_sink.h" />
+    <ClInclude Include="lib\spdlog\sinks\rotating_file_sink-inl.h" />
+    <ClInclude Include="lib\spdlog\sinks\rotating_file_sink.h" />
+    <ClInclude Include="lib\spdlog\sinks\sink-inl.h" />
+    <ClInclude Include="lib\spdlog\sinks\sink.h" />
+    <ClInclude Include="lib\spdlog\sinks\stdout_color_sinks-inl.h" />
+    <ClInclude Include="lib\spdlog\sinks\stdout_color_sinks.h" />
+    <ClInclude Include="lib\spdlog\sinks\stdout_sinks-inl.h" />
+    <ClInclude Include="lib\spdlog\sinks\stdout_sinks.h" />
+    <ClInclude Include="lib\spdlog\sinks\syslog_sink.h" />
+    <ClInclude Include="lib\spdlog\sinks\systemd_sink.h" />
+    <ClInclude Include="lib\spdlog\sinks\tcp_sink.h" />
+    <ClInclude Include="lib\spdlog\sinks\udp_sink.h" />
+    <ClInclude Include="lib\spdlog\sinks\wincolor_sink-inl.h" />
+    <ClInclude Include="lib\spdlog\sinks\wincolor_sink.h" />
+    <ClInclude Include="lib\spdlog\sinks\win_eventlog_sink.h" />
+    <ClInclude Include="lib\spdlog\spdlog-inl.h" />
+    <ClInclude Include="lib\spdlog\spdlog.h" />
+    <ClInclude Include="lib\spdlog\stopwatch.h" />
+    <ClInclude Include="lib\spdlog\tweakme.h" />
+    <ClInclude Include="lib\spdlog\version.h" />
+    <ClInclude Include="lib\tsl\robin_growth_policy.h" />
+    <ClInclude Include="lib\tsl\robin_hash.h" />
+    <ClInclude Include="lib\tsl\robin_map.h" />
+    <ClInclude Include="lib\tsl\robin_set.h" />
+    <ClInclude Include="lib\Zycore\Allocator.h" />
+    <ClInclude Include="lib\Zycore\API\Memory.h" />
+    <ClInclude Include="lib\Zycore\API\Process.h" />
+    <ClInclude Include="lib\Zycore\API\Synchronization.h" />
+    <ClInclude Include="lib\Zycore\API\Terminal.h" />
+    <ClInclude Include="lib\Zycore\API\Thread.h" />
+    <ClInclude Include="lib\Zycore\ArgParse.h" />
+    <ClInclude Include="lib\Zycore\Atomic.h" />
+    <ClInclude Include="lib\Zycore\Bitset.h" />
+    <ClInclude Include="lib\Zycore\Comparison.h" />
+    <ClInclude Include="lib\Zycore\Defines.h" />
+    <ClInclude Include="lib\Zycore\Format.h" />
+    <ClInclude Include="lib\Zycore\Internal\AtomicGNU.h" />
+    <ClInclude Include="lib\Zycore\Internal\AtomicMSVC.h" />
+    <ClInclude Include="lib\Zycore\LibC.h" />
+    <ClInclude Include="lib\Zycore\List.h" />
+    <ClInclude Include="lib\Zycore\Object.h" />
+    <ClInclude Include="lib\Zycore\Status.h" />
+    <ClInclude Include="lib\Zycore\String.h" />
+    <ClInclude Include="lib\Zycore\Types.h" />
+    <ClInclude Include="lib\Zycore\Vector.h" />
+    <ClInclude Include="lib\Zycore\Zycore.h" />
+    <ClInclude Include="lib\Zydis\Decoder.h" />
+    <ClInclude Include="lib\Zydis\DecoderTypes.h" />
+    <ClInclude Include="lib\Zydis\Defines.h" />
+    <ClInclude Include="lib\Zydis\Disassembler.h" />
+    <ClInclude Include="lib\Zydis\Encoder.h" />
+    <ClInclude Include="lib\Zydis\Formatter.h" />
+    <ClInclude Include="lib\Zydis\FormatterBuffer.h" />
+    <ClInclude Include="lib\Zydis\Generated\EnumInstructionCategory.h" />
+    <ClInclude Include="lib\Zydis\Generated\EnumISAExt.h" />
+    <ClInclude Include="lib\Zydis\Generated\EnumISASet.h" />
+    <ClInclude Include="lib\Zydis\Generated\EnumMnemonic.h" />
+    <ClInclude Include="lib\Zydis\Generated\EnumRegister.h" />
+    <ClInclude Include="lib\Zydis\Internal\DecoderData.h" />
+    <ClInclude Include="lib\Zydis\Internal\EncoderData.h" />
+    <ClInclude Include="lib\Zydis\Internal\FormatterATT.h" />
+    <ClInclude Include="lib\Zydis\Internal\FormatterBase.h" />
+    <ClInclude Include="lib\Zydis\Internal\FormatterIntel.h" />
+    <ClInclude Include="lib\Zydis\Internal\SharedData.h" />
+    <ClInclude Include="lib\Zydis\Internal\String.h" />
+    <ClInclude Include="lib\Zydis\MetaInfo.h" />
+    <ClInclude Include="lib\Zydis\Mnemonic.h" />
+    <ClInclude Include="lib\Zydis\Register.h" />
+    <ClInclude Include="lib\Zydis\Segment.h" />
+    <ClInclude Include="lib\Zydis\SharedTypes.h" />
+    <ClInclude Include="lib\Zydis\ShortString.h" />
+    <ClInclude Include="lib\Zydis\Status.h" />
+    <ClInclude Include="lib\Zydis\Utils.h" />
+    <ClInclude Include="lib\Zydis\Zydis.h" />
+    <ClInclude Include="src\analyz\analyz.h" />
+    <ClInclude Include="src\context.h" />
+    <ClInclude Include="src\pattern\acprotect.h" />
+    <ClInclude Include="src\pattern\global.h" />
+    <ClInclude Include="src\pattern\switch.h" />
+    <ClInclude Include="src\settings.h" />
+    <ClInclude Include="src\type\control_flow_graph.h" />
+    <ClInclude Include="src\type\math.h" />
+    <ClInclude Include="src\type\virtual_block.h" />
+    <ClInclude Include="src\type\virtual_edge.h" />
+    <ClInclude Include="src\type\virtual_instruction.h" />
+    <ClInclude Include="src\type\list.h" />
+    <ClInclude Include="src\utils\encoder_decoder.h" />
+    <ClInclude Include="src\utils\logger.h" />
+    <ClInclude Include="src\utils\operand.h" />
+    <ClInclude Include="src\utils\virtual_file.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\analyz\analyz_binary.cpp" />
+    <ClCompile Include="src\context.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\pattern\acprotect.cpp" />
+    <ClCompile Include="src\pattern\global.cpp" />
+    <ClCompile Include="src\pattern\switch.cpp" />
+    <ClCompile Include="src\type\control_flow_graph.cpp" />
+    <ClCompile Include="src\type\virtual_block.cpp" />
+    <ClCompile Include="src\type\virtual_edge.cpp" />
+    <ClCompile Include="src\type\virtual_instruction.cpp" />
+    <ClCompile Include="src\utils\encoder_deocder.cpp" />
+    <ClCompile Include="src\utils\operand.cpp" />
+    <ClCompile Include="src\utils\virtual_file.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".clang-format" />
+    <None Include=".gitignore" />
+    <None Include="readme.md" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
