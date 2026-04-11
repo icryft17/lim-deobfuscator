@@ -2,12 +2,19 @@
 
 ## Protector
 
-- ACProtect (1.32)
+- ACProtect
+  - [x] Obfuscation
+  - [ ] API Randmization 
+  - [ ] Anti Debug
+  - [ ] Anti Loadr
+
 
 ## Cтруктура
 
-- src/pattern - все паттерны
-
+- src/pattern - Все паттерны для protectors
+- src/analyz - Алгоритм анализа
+- src/type - Все нужные абстракции
+- 
 ## Зависимости
 - [spdlog](https://github.com/gabime/spdlog)
 - [minhook](https://github.com/tsudakageyu/minhook)
