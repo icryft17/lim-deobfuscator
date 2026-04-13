@@ -8,8 +8,7 @@
 int main()
 {
 	spdlog::set_level(spdlog::level::debug);
-	spdlog::set_default_logger(spdlog::basic_logger_mt("basic_logger", "log.txt"));
-
+	// spdlog::set_default_logger(spdlog::basic_logger_mt("basic_logger", "log.txt"));
 
 	util::file::VirtualFileBuilder current_file(FILE_NAME);
 

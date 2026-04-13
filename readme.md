@@ -7,8 +7,6 @@
   - [ ] API Randmization 
   - [ ] Anti Debug
   - [ ] Anti Loadr
-
-
 ## Cтруктура
 
 - src/pattern - Все паттерны для protectors

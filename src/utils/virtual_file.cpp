@@ -69,9 +69,9 @@ namespace util
 				return;
 			}
 
-			// get section
 			IMAGE_NT_HEADERS *header = GetPEHeader();
 			IMAGE_DOS_HEADER *dos_header = GetDosHeader();
+
 			if (is_padding)
 			{
 				{
