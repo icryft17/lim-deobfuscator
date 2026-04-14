@@ -11,6 +11,8 @@ namespace pattern
 
 		bool MOV_XOR_SUB(type::PatternContext *pattern_ctx);
 
+		bool INC_DEC(type::PatternContext* pattern_ctx);
+
 		bool PUSH_POP(type::PatternContext *pattern_ctx);
 
 		bool CALL_MEM(type::PatternContext *pattern_ctx);

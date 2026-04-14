@@ -26,6 +26,7 @@ cld
 ,
 cld
 ---------------
+
 opaque predicate
 0046B008   | 7D 01 | jge unpackme_acprotect1.32.c1.46B00B |
 0046B00A   | 72 4F | jb unpackme_acprotect1.32.c1.46B05B  |
@@ -60,3 +61,8 @@ call dword ptr ds:[0x0046BEAD] -> 0046BEAD  A0 93 42 00
 mov x, y
 xor x, k
 --------------------------------------
+
+inc eax
+dec eax
+
+------------------

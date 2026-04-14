@@ -17,6 +17,7 @@
 
 #include <mimalloc/mimalloc.h>
 #include <tsl/robin_map.h>
+#include <tsl/robin_set.h>
 
 #include <Windows.h>
 

@@ -34,6 +34,10 @@ namespace type
 
 		bool IsWrite() noexcept;
 
+		bool IsPacked() noexcept;
+
+		bool Empty() noexcept;
+
 		std::size_t RuntimeAddress() noexcept;
 
 		std::size_t Size() noexcept;

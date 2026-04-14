@@ -11,6 +11,25 @@ namespace type
 
 	bool VirtualBlock::IsWrite() noexcept { return is_write; }
 
+	bool VirtualBlock::Empty() noexcept { return size == 0; }
+
+	bool VirtualBlock::IsPacked() noexcept
+	{
+		// select all bytes
+		tsl::robin_map<std::uint8_t, std::int8_t> bytes;
+		for (std::size_t i = 0; i < size; i++)
+			bytes[physical_address[i]]++;
+
+		float entropy = 0;
+		for (auto pair : bytes)
+		{
+			float l = (float)pair.second / (float)size;
+			if (l > 0)
+				entropy -= l * log2f(l);
+		}
+		return entropy > 7.f;
+	}
+
 	void VirtualBlock::SetIsWrite() noexcept { this->is_write = !this->is_write; }
 	std::size_t VirtualBlock::RuntimeAddress() noexcept { return runtime_address; }
 

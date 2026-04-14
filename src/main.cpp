@@ -17,6 +17,7 @@ int main()
 
 	type::Context *context = type::NewContext(&current_file);
 	{
+		analyz::AnalyzBinary(context);
 		type::ControlFlowGraph *graph = analyz::AnalyzBinary(context);
 
 		util::file::MapNewFile(&current_file, "deobuf_object.exe");

@@ -76,15 +76,102 @@ namespace pattern
 			return false;
 		}
 
+		bool INC_DEC(type::PatternContext *pattern_ctx)
+		{
+			type::VirtualBlock *block = pattern_ctx->GetBlock();
+			type::List<type::VirtualInstruction> list = block->List();
+
+			if (list.Size() < 2)
+				return false;
+
+			type::VirtualInstruction last_instruction = block->LastInstruction();
+			type::VirtualInstruction prev_instruction = list.End()->Prev()->Value();
+
+			const bool inc_dec = prev_instruction.Is(ZYDIS_MNEMONIC_INC) && last_instruction.Is(ZYDIS_MNEMONIC_DEC);
+			const bool dec_inc = prev_instruction.Is(ZYDIS_MNEMONIC_DEC) && last_instruction.Is(ZYDIS_MNEMONIC_INC);
+			if (inc_dec || dec_inc)
+			{
+				std::memset(last_instruction.PhysicalAddress(), 0x90, last_instruction.Size());
+				std::memset(prev_instruction.PhysicalAddress(), 0x90, prev_instruction.Size());
+
+				LOG_DEBUG("pattern INC_DEC", "");
+
+				return true;
+			}
+
+			return false;
+		}
+
+		/*
+			push deobuf_object.46B193
+			test ecx,edx
+			pop eax
+
+			--------
+
+			push deobuf_object.46B193
+			pop eax
+
+		*/
+
 		bool PUSH_POP(type::PatternContext *pattern_ctx)
 		{
 			type::VirtualBlock *current_block = pattern_ctx->GetBlock();
 			type::VirtualInstruction last_instruction = current_block->LastInstruction();
+			type::List<type::VirtualInstruction> list = current_block->List();
 
 			ZydisDisassembledInstruction disassm_instruction = last_instruction.Get();
 
 			if (!last_instruction.IsCatagory(ZYDIS_CATEGORY_PUSH))
+			{
+				if (last_instruction.IsCatagory(ZYDIS_CATEGORY_POP))
+				{
+					if (list.Size() < 3)
+						return false;
+
+					type::VirtualInstruction push_unstruction = list.End()->Prev()->Prev()->Value();
+					if (!push_unstruction.Is(ZYDIS_MNEMONIC_PUSH))
+						return false;
+
+					ZydisDisassembledInstruction one_disassm_instruction = push_unstruction.Get();
+					ZydisDisassembledInstruction two_disassm_instruction = last_instruction.Get();
+
+					ZydisDecodedOperand &src = one_disassm_instruction.operands[0];
+					ZydisDecodedOperand &dst = two_disassm_instruction.operands[0];
+
+					// if (src.type == ZYDIS_OPERAND_TYPE_REGISTER && dst.type == ZYDIS_OPERAND_TYPE_MEMORY)
+					//{
+					ZydisEncoderRequest req{};
+
+					req.machine_mode = disassm_instruction.info.machine_mode;
+					req.operand_count = 2;
+
+					req.mnemonic = ZYDIS_MNEMONIC_MOV;
+
+					req.operands[0] = util::OperandDecodedToEncoded(dst);
+					req.operands[1] = util::OperandDecodedToEncoded(src);
+
+					std::size_t lenght = sizeof(req);
+
+					std::uint8_t buffer_instruction[ZYDIS_MAX_INSTRUCTION_LENGTH];
+					if (ZYAN_SUCCESS(ZydisEncoderEncodeInstruction(&req, buffer_instruction, &lenght)))
+					{
+						std::size_t total_lenght = push_unstruction.Size();
+						if (lenght <= total_lenght)
+						{
+							std::memset(push_unstruction.PhysicalAddress(), 0x90, total_lenght);
+							std::memset(last_instruction.PhysicalAddress(), 0x90, last_instruction.Size());
+
+							std::memcpy(push_unstruction.PhysicalAddress(), buffer_instruction, lenght);
+
+							return true;
+						}
+					}
+					//}
+				}
+
 				return false;
+			}
 
 			type::VirtualInstruction next_instruction = util::DecodeWithNotNOPInstruction(
 				disassm_instruction.info.machine_mode, last_instruction.PhysicalAddress() + last_instruction.Size(),
@@ -160,9 +247,9 @@ namespace pattern
 
 			if (!last_instruction.Is(ZYDIS_MNEMONIC_XOR) && !last_instruction.Is(ZYDIS_MNEMONIC_SUB))
 				return false;
-			// get mov
+
 			type::List<type::VirtualInstruction> list_instruction = current_block->List();
-			if (list_instruction.Size() <= 3)
+			if (list_instruction.Size() < 3)
 				return false;
 
 			type::VirtualInstruction mov_instruction = list_instruction.End()->Prev()->Prev()->Value();

@@ -42,7 +42,8 @@ namespace pattern
 				instruction.Is(ZYDIS_MNEMONIC_CLC))
 				pattern::ac::CLD_CLD_STC_STC_CLC_STC(pattern_ctx);
 
-
+			if (instruction.Is(ZYDIS_MNEMONIC_DEC) || instruction.Is(ZYDIS_MNEMONIC_INC))
+				pattern::ac::INC_DEC(pattern_ctx);
 
 			if (instruction.Is(ZYDIS_MNEMONIC_XOR) || instruction.Is(ZYDIS_MNEMONIC_SUB))
 				pattern::ac::MOV_XOR_SUB(pattern_ctx);
