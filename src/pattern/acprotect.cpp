@@ -53,8 +53,8 @@ namespace pattern
 			const bool is_clc_stc = last_instruction.Is(ZYDIS_MNEMONIC_CLC) && next_instruction.Is(ZYDIS_MNEMONIC_STC);
 			if (is_clc_stc)
 			{
+				util::DeleteInstruction(current_block, last_instruction);
 
-				std::memset(last_instruction.PhysicalAddress(), 0x90, last_instruction.Size());
 				std::memset(next_instruction.PhysicalAddress(), 0x90, next_instruction.Size());
 
 				LOG_DEBUG("pattern -> CLD_CLD_STC_STC_CLC_STC -> {} {}", disassm_instruction.text,
@@ -78,21 +78,21 @@ namespace pattern
 
 		bool INC_DEC(type::PatternContext *pattern_ctx)
 		{
-			type::VirtualBlock *block = pattern_ctx->GetBlock();
-			type::List<type::VirtualInstruction> list = block->List();
+			type::VirtualBlock *current_block = pattern_ctx->GetBlock();
+			type::List<type::VirtualInstruction> list = current_block->List();
 
 			if (list.Size() < 2)
 				return false;
 
-			type::VirtualInstruction last_instruction = block->LastInstruction();
-			type::VirtualInstruction prev_instruction = list.End()->Prev()->Value();
+			type::VirtualInstruction last_instruction = current_block->LastInstruction();
+			type::VirtualInstruction prev_instruction = list.Last()->Prev()->Value();
 
 			const bool inc_dec = prev_instruction.Is(ZYDIS_MNEMONIC_INC) && last_instruction.Is(ZYDIS_MNEMONIC_DEC);
 			const bool dec_inc = prev_instruction.Is(ZYDIS_MNEMONIC_DEC) && last_instruction.Is(ZYDIS_MNEMONIC_INC);
 			if (inc_dec || dec_inc)
 			{
-				std::memset(last_instruction.PhysicalAddress(), 0x90, last_instruction.Size());
-				std::memset(prev_instruction.PhysicalAddress(), 0x90, prev_instruction.Size());
+				util::DeleteInstruction(current_block, last_instruction);
+				util::DeleteInstruction(current_block, prev_instruction);
 
 				LOG_DEBUG("pattern INC_DEC", "");
 
@@ -117,10 +117,80 @@ namespace pattern
 		bool PUSH_POP(type::PatternContext *pattern_ctx)
 		{
 			type::VirtualBlock *current_block = pattern_ctx->GetBlock();
+			type::ControlFlowGraph *graph = pattern_ctx->Graph();
+
 			type::VirtualInstruction last_instruction = current_block->LastInstruction();
 			type::List<type::VirtualInstruction> list = current_block->List();
 
 			ZydisDisassembledInstruction disassm_instruction = last_instruction.Get();
+
+			if (pattern_ctx->IsPred())
+			{
+				if (list.Size() < 2)
+					return false;
+
+				type::VirtualInstruction push_instruction = list.Last()->Prev()->Value();
+
+				if (push_instruction.Is(ZYDIS_MNEMONIC_PUSH))
+				{
+					tsl::robin_map<std::size_t, type::VirtualEdge> edges = current_block->Edges();
+					if (!edges.empty())
+					{
+						for (auto edge : edges)
+						{
+							type::VirtualEdge virtual_edge = edge.second;
+							type::VirtualBlock *virtual_block = graph->Get(edge.first);
+							if (!virtual_block)
+								continue;
+
+							type::VirtualInstruction first_instruction = virtual_block->FirstInstruction();
+
+							if (first_instruction.Is(ZYDIS_MNEMONIC_POP))
+							{
+								ZydisDisassembledInstruction one_disassm_instruction = push_instruction.Get();
+								ZydisDisassembledInstruction two_disassm_instruction = first_instruction.Get();
+
+								ZydisDecodedOperand &src = one_disassm_instruction.operands[0];
+								ZydisDecodedOperand &dst = two_disassm_instruction.operands[0];
+
+								// if (src.type == ZYDIS_OPERAND_TYPE_REGISTER && dst.type ==
+								// ZYDIS_OPERAND_TYPE_MEMORY)
+								//{
+								ZydisEncoderRequest req{};
+
+								req.machine_mode = disassm_instruction.info.machine_mode;
+								req.operand_count = 2;
+
+								req.mnemonic = ZYDIS_MNEMONIC_MOV;
+
+								req.operands[0] = util::OperandDecodedToEncoded(dst);
+								req.operands[1] = util::OperandDecodedToEncoded(src);
+
+								std::size_t lenght = sizeof(req);
+
+								std::uint8_t buffer_instruction[ZYDIS_MAX_INSTRUCTION_LENGTH];
+								if (ZYAN_SUCCESS(ZydisEncoderEncodeInstruction(&req, buffer_instruction, &lenght)))
+								{
+									std::size_t total_lenght = push_instruction.Size();
+									if (lenght <= total_lenght)
+									{
+
+										util::DeleteInstruction(current_block, push_instruction);
+										util::DeleteInstruction(virtual_block, first_instruction);
+
+										std::memcpy(push_instruction.PhysicalAddress(), buffer_instruction, lenght);
+
+										LOG_DEBUG("pattern push pop block {} {}", push_instruction.Get().text,
+												  first_instruction.Get().text);
+
+										return true;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 
 			if (!last_instruction.IsCatagory(ZYDIS_CATEGORY_PUSH))
 			{
@@ -129,7 +199,7 @@ namespace pattern
 					if (list.Size() < 3)
 						return false;
 
-					type::VirtualInstruction push_unstruction = list.End()->Prev()->Prev()->Value();
+					type::VirtualInstruction push_unstruction = list.Last()->Prev()->Prev()->Value();
 					if (!push_unstruction.Is(ZYDIS_MNEMONIC_PUSH))
 						return false;
 
@@ -139,8 +209,6 @@ namespace pattern
 					ZydisDecodedOperand &src = one_disassm_instruction.operands[0];
 					ZydisDecodedOperand &dst = two_disassm_instruction.operands[0];
 
-					// if (src.type == ZYDIS_OPERAND_TYPE_REGISTER && dst.type == ZYDIS_OPERAND_TYPE_MEMORY)
-					//{
 					ZydisEncoderRequest req{};
 
 					req.machine_mode = disassm_instruction.info.machine_mode;
@@ -159,8 +227,8 @@ namespace pattern
 						std::size_t total_lenght = push_unstruction.Size();
 						if (lenght <= total_lenght)
 						{
-							std::memset(push_unstruction.PhysicalAddress(), 0x90, total_lenght);
-							std::memset(last_instruction.PhysicalAddress(), 0x90, last_instruction.Size());
+							util::DeleteInstruction(current_block, push_unstruction);
+							util::DeleteInstruction(current_block, last_instruction);
 
 							std::memcpy(push_unstruction.PhysicalAddress(), buffer_instruction, lenght);
 
@@ -169,7 +237,6 @@ namespace pattern
 					}
 					//}
 				}
-
 				return false;
 			}
 
@@ -179,7 +246,9 @@ namespace pattern
 
 			if (next_instruction.Is(ZYDIS_MNEMONIC_POPAD) && last_instruction.Is(ZYDIS_MNEMONIC_PUSHAD))
 			{
-				std::memset(last_instruction.PhysicalAddress(), 0x90, last_instruction.Size());
+				util::DeleteInstruction(current_block, last_instruction);
+
+				// std::memset(last_instruction.PhysicalAddress(), 0x90, last_instruction.Size());
 				std::memset(next_instruction.PhysicalAddress(), 0x90, next_instruction.Size());
 
 				LOG_DEBUG("pattern pushad popad -> {} {}", disassm_instruction.text, next_instruction.Get().text);
@@ -197,7 +266,7 @@ namespace pattern
 
 				if (util::IsOpernadToOpernad(src, dst))
 				{
-					std::memset(last_instruction.PhysicalAddress(), 0x90, last_instruction.Size());
+					util::DeleteInstruction(current_block, last_instruction);
 					std::memset(next_instruction.PhysicalAddress(), 0x90, next_instruction.Size());
 
 					LOG_DEBUG("pattern push pop -> {} {} -> {} {}", last_instruction.Get().text,
@@ -207,7 +276,12 @@ namespace pattern
 					return true;
 				}
 
-				if (src.type == ZYDIS_OPERAND_TYPE_REGISTER && dst.type == ZYDIS_OPERAND_TYPE_MEMORY)
+				const bool reg_memory =
+					src.type == ZYDIS_OPERAND_TYPE_REGISTER && dst.type == ZYDIS_OPERAND_TYPE_MEMORY;
+				const bool imm_reg =
+					src.type == ZYDIS_OPERAND_TYPE_IMMEDIATE && dst.type == ZYDIS_OPERAND_TYPE_REGISTER;
+
+				if (reg_memory || imm_reg)
 				{
 					ZydisEncoderRequest req{};
 
@@ -227,16 +301,18 @@ namespace pattern
 						std::size_t total_lenght = last_instruction.Size() + next_instruction.Size();
 						if (lenght < total_lenght)
 						{
-							std::memset(last_instruction.PhysicalAddress(), 0x90, total_lenght);
+							util::DeleteInstruction(current_block, last_instruction);
+							// std::memset(last_instruction.PhysicalAddress(), 0x90, last_instruction.Size());
+							std::memset(next_instruction.PhysicalAddress(), 0x90, next_instruction.Size());
+
 							std::memcpy(last_instruction.PhysicalAddress(), buffer_instruction, lenght);
 
 							return true;
 						}
 					}
 				}
-				// push eax
-				// pop ds segenent
 			}
+
 			return false;
 		}
 
@@ -244,15 +320,89 @@ namespace pattern
 		{
 			type::VirtualBlock *current_block = pattern_ctx->GetBlock();
 			type::VirtualInstruction last_instruction = current_block->LastInstruction();
+			type::ControlFlowGraph *graph = pattern_ctx->Graph();
 
-			if (!last_instruction.Is(ZYDIS_MNEMONIC_XOR) && !last_instruction.Is(ZYDIS_MNEMONIC_SUB))
+			type::List<type::VirtualInstruction> instructions = current_block->List();
+
+			if (pattern_ctx->IsPred())
+			{
+				if (instructions.Size() < 2)
+					return false;
+
+				type::VirtualInstruction mov_instruction = instructions.Last()->Prev()->Value();
+				if (mov_instruction.Is(ZYDIS_MNEMONIC_MOV))
+				{
+					tsl::robin_map<std::size_t, type::VirtualEdge> edges = current_block->Edges();
+					if (!edges.empty())
+					{
+						for (auto edge : edges)
+						{
+							type::VirtualEdge virtual_edge = edge.second;
+
+							if (virtual_edge.Type() != type::PositiveEdge)
+								continue;
+
+							type::VirtualBlock *virtual_block = graph->Get(virtual_edge.To());
+							type::VirtualInstruction first_instruction = virtual_block->FirstInstruction();
+
+							ZydisDisassembledInstruction disassm_mov = mov_instruction.Get();
+							ZydisDisassembledInstruction disassm_instructuion = first_instruction.Get();
+
+							ZydisDecodedOperand &one_opernad = disassm_mov.operands[0];
+							ZydisDecodedOperand &two_opernad = disassm_instructuion.operands[0];
+
+							if (util::IsOpernadToOpernad(one_opernad, two_opernad))
+							{
+								if (disassm_mov.operands[1].type == ZYDIS_OPERAND_TYPE_IMMEDIATE &&
+									disassm_instructuion.operands[1].type == ZYDIS_OPERAND_TYPE_IMMEDIATE)
+								{
+									std::size_t instruction_value = disassm_instructuion.operands[1].imm.value.s;
+									std::size_t mov_value = disassm_mov.operands[1].imm.value.s;
+
+									switch (disassm_instructuion.info.mnemonic)
+									{
+									case ZYDIS_MNEMONIC_SUB:
+									{
+										mov_value = mov_value - instruction_value;
+										break;
+									}
+
+									case ZYDIS_MNEMONIC_XOR:
+									{
+										mov_value = mov_value ^ instruction_value;
+										break;
+									}
+
+									case ZYDIS_MNEMONIC_ADD:
+									{
+										mov_value = mov_value + instruction_value;
+										break;
+									}
+									}
+
+									disassm_mov.operands[1].imm.value.s = mov_value;
+
+									mov_instruction.SetOperand(1, disassm_mov.operands[1]);
+
+									virtual_block->DeleteInstruction(virtual_block->List().Begin());
+								}
+							}
+						}
+					}
+				}
+
+				return false;
+			}
+
+			if (!last_instruction.Is(ZYDIS_MNEMONIC_XOR) && !last_instruction.Is(ZYDIS_MNEMONIC_SUB) &&
+				last_instruction.Is(ZYDIS_MNEMONIC_ADD))
 				return false;
 
 			type::List<type::VirtualInstruction> list_instruction = current_block->List();
 			if (list_instruction.Size() < 3)
 				return false;
 
-			type::VirtualInstruction mov_instruction = list_instruction.End()->Prev()->Prev()->Value();
+			type::VirtualInstruction mov_instruction = list_instruction.Last()->Prev()->Prev()->Value();
 			if (mov_instruction.Is(ZYDIS_MNEMONIC_MOV))
 			{
 				ZydisDisassembledInstruction disassm_mov = mov_instruction.Get();
@@ -282,13 +432,19 @@ namespace pattern
 							mov_value = mov_value ^ instruction_value;
 							break;
 						}
+
+						case ZYDIS_MNEMONIC_ADD:
+						{
+							mov_value = mov_value + instruction_value;
+							break;
+						}
 						}
 
 						disassm_mov.operands[1].imm.value.s = mov_value;
 
 						mov_instruction.SetOperand(1, disassm_mov.operands[1]);
 
-						current_block->DeleteInstruction(list_instruction.End());
+						current_block->DeleteInstruction(list_instruction.Last());
 
 						return true;
 					}
@@ -354,7 +510,7 @@ namespace pattern
 
 							LOG_DEBUG("pattern 0x6 -> CALL_MEM -> reset {}", disassembly_instruction.text);
 
-							current_block->DeleteInstruction(current_block->List().End());
+							current_block->DeleteInstruction(current_block->List().Last());
 
 							return true;
 						}
@@ -369,7 +525,7 @@ namespace pattern
 
 						LOG_DEBUG("pattern 0x4 -> CALL_MEM -> reset {}", disassembly_instruction.text);
 
-						current_block->DeleteInstruction(current_block->List().End());
+						current_block->DeleteInstruction(current_block->List().Last());
 
 						return true;
 					}

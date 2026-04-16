@@ -19,10 +19,10 @@ namespace type
 
 		size++;
 		std::size_t runtime_address = block->RuntimeAddress();
-		for (std::size_t i = 0; i < (block->Size()); i++)
-			map_blocks[runtime_address + i] = block;
+		// for (std::size_t i = 0; i < (block->Size() - 1); i++)
+		//	map_blocks[runtime_address + i] = block;
 
-		// map_blocks[block->RuntimeAddress()] = block;
+		map_blocks[block->RuntimeAddress()] = block;
 	}
 
 	void ControlFlowGraph::InsertEdge(VirtualEdge edge)

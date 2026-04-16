@@ -45,7 +45,8 @@ namespace pattern
 			if (instruction.Is(ZYDIS_MNEMONIC_DEC) || instruction.Is(ZYDIS_MNEMONIC_INC))
 				pattern::ac::INC_DEC(pattern_ctx);
 
-			if (instruction.Is(ZYDIS_MNEMONIC_XOR) || instruction.Is(ZYDIS_MNEMONIC_SUB))
+			if (instruction.Is(ZYDIS_MNEMONIC_XOR) || instruction.Is(ZYDIS_MNEMONIC_SUB) ||
+				instruction.Is(ZYDIS_MNEMONIC_ADD))
 				pattern::ac::MOV_XOR_SUB(pattern_ctx);
 		}
 
@@ -57,6 +58,15 @@ namespace pattern
 			block
 
 		*/
+
+		return false;
+	}
+
+	bool TemplatePattern(type::PatternContext *pattern_ctx)
+	{
+		type::Context *ctx = pattern_ctx->GetContext();
+		type::VirtualBlock *current_block = pattern_ctx->GetBlock();
+		type::ControlFlowGraph *graph = pattern_ctx->Graph();
 
 		return false;
 	}

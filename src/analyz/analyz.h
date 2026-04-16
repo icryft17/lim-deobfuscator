@@ -10,5 +10,6 @@ namespace analyz
 {
 	type::ControlFlowGraph *AnalyzBinary(type::Context *ctx);
 
-}
+	void FinishAnalyzBinary(type::Context *ctx, type::ControlFlowGraph *graph);
+} // namespace analyz
 #endif

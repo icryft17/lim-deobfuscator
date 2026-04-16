@@ -555,7 +555,7 @@
     <ClInclude Include="src\type\math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\utils\encoder_decoder.h">
+    <ClInclude Include="src\utils\encoder_decoder_delete.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\pattern\global.h">
@@ -596,13 +596,16 @@
     <ClCompile Include="src\pattern\acprotect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\utils\encoder_deocder.cpp">
+    <ClCompile Include="src\utils\encoder_deocder_delete.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\pattern\global.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\utils\operand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pattern\finish_switch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

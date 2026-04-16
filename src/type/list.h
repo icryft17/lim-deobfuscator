@@ -72,7 +72,11 @@ namespace type
 
 		Node<T> *Begin() { return node; }
 
-		Node<T> *End() { return current_node->prev; }
+		Node<T> *End() { return current_node; }
+
+		Node<T> *First() { return node; }
+
+		Node<T> *Last() { return current_node->prev; }
 
 		void Push(T value)
 		{
@@ -85,8 +89,8 @@ namespace type
 			current_node->value = value;
 			current_node->next = allocator.New();
 			current_node->next->prev = current_node;
-
 			current_node = current_node->next;
+
 			size++;
 		}
 

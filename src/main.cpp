@@ -17,8 +17,16 @@ int main()
 
 	type::Context *context = type::NewContext(&current_file);
 	{
-		analyz::AnalyzBinary(context);
+
+
+		// memset is not good 
+		//
+		// 
+		// 
+		// analyz::AnalyzBinary(context);
 		type::ControlFlowGraph *graph = analyz::AnalyzBinary(context);
+
+		analyz::FinishAnalyzBinary(context, graph);
 
 		util::file::MapNewFile(&current_file, "deobuf_object.exe");
 

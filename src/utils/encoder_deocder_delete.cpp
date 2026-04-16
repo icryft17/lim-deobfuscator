@@ -1,4 +1,4 @@
-#include "encoder_decoder.h"
+#include "encoder_decoder_delete.h"
 
 namespace util
 {
@@ -34,5 +34,19 @@ namespace util
 		std::size_t lenght = sizeof(req);
 
 		return ZYAN_SUCCESS(ZydisEncoderEncodeInstruction(&req, object, &lenght));
+	}
+
+	void DeleteInstruction(type::VirtualBlock *current_block, type::VirtualInstruction instruction)
+	{
+		if (!current_block)
+			return;
+
+		type::List<type::VirtualInstruction> instructions = current_block->List();
+		for (auto it = instructions.Begin(); it != instructions.End()->next; it = it->Next())
+		{
+			type::VirtualInstruction virtual_instruction = it->Value();
+			if (virtual_instruction.RuntimeAddress() == instruction.RuntimeAddress())
+				current_block->DeleteInstruction(it);
+		}
 	}
 } // namespace util

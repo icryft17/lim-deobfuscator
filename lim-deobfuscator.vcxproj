@@ -334,7 +334,7 @@
     <ClInclude Include="src\type\virtual_edge.h" />
     <ClInclude Include="src\type\virtual_instruction.h" />
     <ClInclude Include="src\type\list.h" />
-    <ClInclude Include="src\utils\encoder_decoder.h" />
+    <ClInclude Include="src\utils\encoder_decoder_delete.h" />
     <ClInclude Include="src\utils\logger.h" />
     <ClInclude Include="src\utils\operand.h" />
     <ClInclude Include="src\utils\virtual_file.h" />
@@ -344,13 +344,14 @@
     <ClCompile Include="src\context.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\pattern\acprotect.cpp" />
+    <ClCompile Include="src\pattern\finish_switch.cpp" />
     <ClCompile Include="src\pattern\global.cpp" />
     <ClCompile Include="src\pattern\switch.cpp" />
     <ClCompile Include="src\type\control_flow_graph.cpp" />
     <ClCompile Include="src\type\virtual_block.cpp" />
     <ClCompile Include="src\type\virtual_edge.cpp" />
     <ClCompile Include="src\type\virtual_instruction.cpp" />
-    <ClCompile Include="src\utils\encoder_deocder.cpp" />
+    <ClCompile Include="src\utils\encoder_deocder_delete.cpp" />
     <ClCompile Include="src\utils\operand.cpp" />
     <ClCompile Include="src\utils\virtual_file.cpp" />
   </ItemGroup>

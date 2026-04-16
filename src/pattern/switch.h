@@ -9,9 +9,11 @@ namespace pattern
 {
 	bool Go(type::VirtualInstruction instruction, type::PatternContext *pattern_ctx);
 
-
+	bool FinishGo(type::VirtualInstruction instruction, type::PatternContext* pattern_ctx);
 	// go block // instruction
 
+
+	bool TemplatePattern(type::PatternContext* pattern_ctx);
 	// decoder -> nop //  o n
 
 

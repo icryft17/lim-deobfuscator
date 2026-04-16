@@ -4,7 +4,7 @@ namespace type
 {
 
 	VirtualBlock::VirtualBlock(block_type type, std::uint8_t *physical_address, std::size_t runtime_address)
-		: physical_address(physical_address), runtime_address(runtime_address)
+		: physical_address(physical_address), runtime_address(runtime_address), type(type)
 	{
 	}
 	bool VirtualBlock::IsInstruction(ZydisMnemonic menmonic) noexcept { return instructions_map[menmonic]; }
@@ -41,9 +41,9 @@ namespace type
 
 	std::uint8_t *VirtualBlock::PhysicalAddress() noexcept { return physical_address; }
 
-	type::VirtualInstruction VirtualBlock::LastInstruction() { return instructions.End()->Value(); }
+	type::VirtualInstruction VirtualBlock::LastInstruction() { return instructions.Last()->Value(); }
 
-	type::VirtualInstruction VirtualBlock::FirstInstruction() { return instructions.Begin()->Value(); }
+	type::VirtualInstruction VirtualBlock::FirstInstruction() { return instructions.First()->Value(); }
 
 	type::List<VirtualInstruction> &VirtualBlock::List() { return instructions; }
 

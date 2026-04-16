@@ -1,7 +1,48 @@
-#include "analyz.h"
+﻿#include "analyz.h"
 
 namespace analyz
 {
+	void FinishAnalyzBinary(type::Context *ctx, type::ControlFlowGraph *graph)
+	{
+		type::VirtualBlock *current_block = graph->EntryBlock();
+
+		type::List<type::VirtualInstruction> instructions;
+
+		type::PatternContext *pattern_ctx = type::NewPatternContext(ctx, current_block, graph, true);
+		// create pattern_ctx
+		std::queue<type::VirtualBlock *> list_block;
+
+		while (true)
+		{
+			instructions = current_block->List();
+			for (auto it = instructions.Begin(); it != instructions.End(); it = it->Next())
+				pattern::FinishGo(it->Value(), pattern_ctx);
+
+			for (auto &edge : current_block->Edges())
+			{
+				type::VirtualEdge virtual_edge = edge.second;
+				type::VirtualBlock *block = graph->Get(virtual_edge.To());
+
+				if (!block->IsWrite())
+				{
+					block->SetIsWrite();
+
+					list_block.push(block);
+				}
+			}
+
+			if (!list_block.empty())
+			{
+				current_block = list_block.front();
+				list_block.pop();
+
+				pattern_ctx->SetVirtualBlock(current_block);
+
+				continue;
+			}
+			break;
+		}
+	}
 
 	type::VirtualBlock *AnalyzBlock(type::PatternContext *ctx, ZydisMachineMode mode, type::VirtualBlock *block)
 	{
@@ -83,7 +124,7 @@ namespace analyz
 
 		type::ControlFlowGraph *graph = type::NewControlFlowGraph(current_block);
 
-		type::PatternContext *pattern_ctx = type::NewPatternContext(ctx, current_block);
+		type::PatternContext *pattern_ctx = type::NewPatternContext(ctx, current_block, nullptr, false);
 
 		std::queue<type::VirtualBlock *> list_block;
 		std::queue<type::VirtualEdge> list_edge;
@@ -179,6 +220,15 @@ namespace analyz
 
 			break;
 		}
+
+		while (!list_edge.empty())
+		{
+			type::VirtualEdge edge = list_edge.front();
+			list_edge.pop();
+
+			graph->InsertEdge(edge);
+		}
+
 		return graph;
 	}
 } // namespace analyz
